@@ -6,7 +6,7 @@ import Menu from './Menu';
 import PopularSongs from './PopularSongs';
 import StylesList from './StylesList';
 import Style from './Style';
-import Song from './Song';
+import Song from '../containers/Song';
 import AddSong from './AddSong';
 import Cart from './Cart';
 
