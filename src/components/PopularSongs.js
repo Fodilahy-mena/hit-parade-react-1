@@ -11,8 +11,10 @@ const SongsContainer = styled.ul`
 	margin: 0;
 `;
 
-export default function PopularSongs() {
-	const { songs } = useContext(Context);
+export default function PopularSongs({songs, cartItems, favoriteSong, upvoteSong, downvoteSong, addToCart, removeCartItem}) {
+
+	// This is an array from context and no longer be used since we use redux
+	// const { songs } = useContext(Context);
 
 	function sortSongsByPopularity(songA, songB) {
 		const ratioA = songA.upvotes - songA.downvotes;
@@ -24,7 +26,13 @@ export default function PopularSongs() {
 		if (!songs) return;
 		const songsList = songs
 			.sort(sortSongsByPopularity)
-			.map(song => <SongItem key={song.id} song={song}></SongItem>);
+			.map(song => <SongItem key={song.id}
+				cartItems={cartItems}
+				song={song} 
+				favoriteSong={favoriteSong} 
+				upvoteSong={upvoteSong} downvoteSong={downvoteSong}
+				addToCart={addToCart} removeCartItem={removeCartItem}
+				></SongItem>);
 		return songsList;
 	}
 

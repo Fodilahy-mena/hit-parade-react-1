@@ -55153,16 +55153,23 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 var SongItemStyle = _styledComponents.default.div(_templateObject());
 
 function SongItem(_ref) {
-  var song = _ref.song;
+  var song = _ref.song,
+      cartItems = _ref.cartItems,
+      favoriteSong = _ref.favoriteSong,
+      upvoteSong = _ref.upvoteSong,
+      downvoteSong = _ref.downvoteSong,
+      addToCart = _ref.addToCart,
+      removeCartItem = _ref.removeCartItem;
 
-  var _useContext = (0, _react.useContext)(_Context.Context),
-      favoriteSong = _useContext.favoriteSong,
-      upvoteSong = _useContext.upvoteSong,
-      downvoteSong = _useContext.downvoteSong,
-      addToCart = _useContext.addToCart,
-      cartItems = _useContext.cartItems,
-      removeCartItem = _useContext.removeCartItem;
-
+  // Those are functions and variables state from context and they no longer be used since we use redux
+  // const {
+  // 	// favoriteSong,
+  // 	// upvoteSong,
+  // 	// downvoteSong,
+  // 	// addToCart,
+  // 	// cartItems,
+  // 	// removeCartItem,
+  // } = useContext(Context);
   function showCartIcon() {
     var isAlreadyInCart = cartItems.some(function (item) {
       return item.id === song.id;
@@ -55246,10 +55253,17 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 var SongsContainer = _styledComponents.default.ul(_templateObject());
 
-function PopularSongs() {
-  var _useContext = (0, _react.useContext)(_Context.Context),
-      songs = _useContext.songs;
+function PopularSongs(_ref) {
+  var songs = _ref.songs,
+      cartItems = _ref.cartItems,
+      favoriteSong = _ref.favoriteSong,
+      upvoteSong = _ref.upvoteSong,
+      downvoteSong = _ref.downvoteSong,
+      addToCart = _ref.addToCart,
+      removeCartItem = _ref.removeCartItem;
 
+  // This is an array from context and no longer be used since we use redux
+  // const { songs } = useContext(Context);
   function sortSongsByPopularity(songA, songB) {
     var ratioA = songA.upvotes - songA.downvotes;
     var ratioB = songB.upvotes - songB.downvotes;
@@ -55261,7 +55275,13 @@ function PopularSongs() {
     var songsList = songs.sort(sortSongsByPopularity).map(function (song) {
       return /*#__PURE__*/_react.default.createElement(_SongItem.default, {
         key: song.id,
-        song: song
+        cartItems: cartItems,
+        song: song,
+        favoriteSong: favoriteSong,
+        upvoteSong: upvoteSong,
+        downvoteSong: downvoteSong,
+        addToCart: addToCart,
+        removeCartItem: removeCartItem
       });
     });
     return songsList;
@@ -55269,7 +55289,126 @@ function PopularSongs() {
 
   return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h1", null, "Popular Songs"), /*#__PURE__*/_react.default.createElement(SongsContainer, null, showSongsList()));
 }
-},{"react":"node_modules/react/index.js","./Context":"src/components/Context.js","./SongItem":"src/components/SongItem.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js"}],"src/components/StylesList.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","./Context":"src/components/Context.js","./SongItem":"src/components/SongItem.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js"}],"src/actions/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.setSongs = setSongs;
+exports.setCartItems = setCartItems;
+exports.setStyles = setStyles;
+exports.toggleFavouriteSong = toggleFavouriteSong;
+exports.upvoteSong = upvoteSong;
+exports.downvoteSong = downvoteSong;
+exports.addToCart = addToCart;
+exports.removeCartItem = removeCartItem;
+exports.emptyCart = emptyCart;
+exports.addSong = addSong;
+
+function setSongs(songs) {
+  return {
+    type: "SET_SONGS",
+    value: songs
+  };
+}
+
+function setCartItems(cartItems) {
+  return {
+    type: "SET_CART_ITEMS",
+    value: cartItems
+  };
+}
+
+function setStyles(styles) {
+  return {
+    type: "SET_SYLES",
+    value: styles
+  };
+}
+
+function toggleFavouriteSong(favouriteSongId) {
+  return {
+    type: 'TOGGLE_FAVOURITE',
+    value: favouriteSongId
+  };
+}
+
+function upvoteSong(upvoteSongId) {
+  return {
+    type: "UPVOTE_SONG",
+    value: upvoteSongId
+  };
+}
+
+function downvoteSong(downvoteSongId) {
+  return {
+    type: "DOWNVOTE_SONG",
+    value: downvoteSongId
+  };
+}
+
+function addToCart(song) {
+  return {
+    type: "ADD_TO_CART",
+    value: song
+  };
+}
+
+function removeCartItem(songId) {
+  return {
+    type: "REMOVE_FROM_CART",
+    value: songId
+  };
+}
+
+function emptyCart() {
+  return {
+    type: "EMPTY_CART"
+  };
+}
+
+function addSong(song) {
+  return {
+    type: "ADD_SONG",
+    value: song
+  };
+}
+},{}],"src/containers/PopularSongs.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _reactRedux = require("react-redux");
+
+var _PopularSongs = _interopRequireDefault(require("../components/PopularSongs"));
+
+var _actions = require("../actions");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function mapStateToProps(state) {
+  return {
+    songs: state.songs,
+    cartItems: state.cartItems
+  };
+}
+
+var mapDispatchToProps = {
+  favoriteSong: _actions.toggleFavouriteSong,
+  upvoteSong: _actions.upvoteSong,
+  downvoteSong: _actions.downvoteSong,
+  addToCart: _actions.addToCart,
+  removeCartItem: _actions.removeCartItem
+};
+
+var _default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_PopularSongs.default);
+
+exports.default = _default;
+},{"react-redux":"node_modules/react-redux/es/index.js","../components/PopularSongs":"src/components/PopularSongs.js","../actions":"src/actions/index.js"}],"src/components/StylesList.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -55305,10 +55444,10 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 var StylesContainer = _styledComponents.default.div(_templateObject());
 
-function StylesList() {
-  var _useContext = (0, _react.useContext)(_Context.Context),
-      styles = _useContext.styles;
-
+function StylesList(_ref) {
+  var styles = _ref.styles;
+  // This is an array from context and no longer be used since we use redux
+  // const { styles } = useContext(Context);
   return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h1", null, "Styles list"), /*#__PURE__*/_react.default.createElement(StylesContainer, null, styles.map(function (style) {
     return /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
       to: "/styles/".concat(style),
@@ -55316,7 +55455,30 @@ function StylesList() {
     }, "\uD83C\uDFA7 ", style);
   })));
 }
-},{"react":"node_modules/react/index.js","./Context":"src/components/Context.js","react-router-dom":"node_modules/react-router-dom/esm/react-router-dom.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js"}],"src/components/Style.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","./Context":"src/components/Context.js","react-router-dom":"node_modules/react-router-dom/esm/react-router-dom.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js"}],"src/containers/StylesList.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _reactRedux = require("react-redux");
+
+var _StylesList = _interopRequireDefault(require("../components/StylesList"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function mapStateToProps(state) {
+  return {
+    styles: state.styles
+  };
+}
+
+var _default = (0, _reactRedux.connect)(mapStateToProps, null)(_StylesList.default);
+
+exports.default = _default;
+},{"react-redux":"node_modules/react-redux/es/index.js","../components/StylesList":"src/components/StylesList.js"}],"src/components/Style.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -55367,12 +55529,13 @@ var SongPreview = _styledComponents.default.div(_templateObject2());
 
 exports.SongPreview = SongPreview;
 
-function Style() {
-  var _useParams = (0, _reactRouterDom.useParams)(),
-      styleName = _useParams.styleName;
+function Style(_ref) {
+  var songs = _ref.songs;
 
-  var _useContext = (0, _react.useContext)(_Context.Context),
-      songs = _useContext.songs;
+  var _useParams = (0, _reactRouterDom.useParams)(),
+      styleName = _useParams.styleName; // This is an array array from context and no longer be used since we use redux
+  // const { songs } = useContext(Context);
+
 
   function createSongTemplate(song) {
     return /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
@@ -55395,7 +55558,30 @@ function Style() {
 
   return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h1", null, "Style"), /*#__PURE__*/_react.default.createElement(SongPreviewContainer, null, showSongsFilteredByStyle()));
 }
-},{"react":"node_modules/react/index.js","./Context":"src/components/Context.js","react-router-dom":"node_modules/react-router-dom/esm/react-router-dom.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js"}],"node_modules/react-icons/Ai/index.esm.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","./Context":"src/components/Context.js","react-router-dom":"node_modules/react-router-dom/esm/react-router-dom.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js"}],"src/containers/Style.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _reactRedux = require("react-redux");
+
+var _Style = _interopRequireDefault(require("../components/Style"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function mapStateToProps(state) {
+  return {
+    songs: state.songs
+  };
+}
+
+var _default = (0, _reactRedux.connect)(mapStateToProps, null)(_Style.default);
+
+exports.default = _default;
+},{"react-redux":"node_modules/react-redux/es/index.js","../components/Style":"src/components/Style.js"}],"node_modules/react-icons/Ai/index.esm.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -71955,11 +72141,12 @@ var FormStyles = _styledComponents.default.form(_templateObject()); // control i
 // value, onChange
 
 
-function AddSong() {
-  var _useContext = (0, _react.useContext)(_Context.Context),
-      styles = _useContext.styles,
-      addSong = _useContext.addSong;
+function AddSong(_ref) {
+  var styles = _ref.styles,
+      addSong = _ref.addSong;
 
+  // This is a function from context and no longer be used since we use redux
+  // const { addSong } = useContext(Context);
   var _useState = (0, _react.useState)(''),
       _useState2 = _slicedToArray(_useState, 2),
       title = _useState2[0],
@@ -72051,7 +72238,36 @@ function AddSong() {
     }
   }), /*#__PURE__*/_react.default.createElement("button", null, "Add")));
 }
-},{"react":"node_modules/react/index.js","./Context":"src/components/Context.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js"}],"src/components/Cart.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","./Context":"src/components/Context.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js"}],"src/containers/AddSong.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _reactRedux = require("react-redux");
+
+var _AddSong = _interopRequireDefault(require("../components/AddSong"));
+
+var _actions = require("../actions");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function mapStateToProps(state) {
+  return {
+    styles: state.styles
+  };
+}
+
+var mapDispatchToProps = {
+  addSong: _actions.addSong
+};
+
+var _default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_AddSong.default);
+
+exports.default = _default;
+},{"react-redux":"node_modules/react-redux/es/index.js","../components/AddSong":"src/components/AddSong.js","../actions":"src/actions/index.js"}],"src/components/Cart.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -72111,12 +72327,13 @@ var CartItemsContainer = _styledComponents.default.div(_templateObject());
 
 var CartItemStyles = _styledComponents.default.div(_templateObject2());
 
-function Cart() {
-  var _useContext = (0, _react.useContext)(_Context.Context),
-      cartItems = _useContext.cartItems,
-      removeCartItem = _useContext.removeCartItem,
-      emptyCart = _useContext.emptyCart;
+function Cart(_ref) {
+  var cartItems = _ref.cartItems,
+      removeCartItem = _ref.removeCartItem,
+      emptyCart = _ref.emptyCart;
 
+  // This is a function from context and they longer be used since we use redux
+  // const { emptyCart } = useContext(Context);
   var _useState = (0, _react.useState)(0),
       _useState2 = _slicedToArray(_useState, 2),
       total = _useState2[0],
@@ -72151,7 +72368,37 @@ function Cart() {
     onClick: completeOrder
   }, "Buy"));
 }
-},{"react":"node_modules/react/index.js","./Context":"src/components/Context.js","react-icons/ai":"node_modules/react-icons/ai/index.esm.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js"}],"src/components/App.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","./Context":"src/components/Context.js","react-icons/ai":"node_modules/react-icons/ai/index.esm.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js"}],"src/containers/Cart.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _reactRedux = require("react-redux");
+
+var _Cart = _interopRequireDefault(require("../components/Cart"));
+
+var _actions = require("../actions");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function mapStateToProps(state) {
+  return {
+    cartItems: state.cartItems
+  };
+}
+
+var mapDispatchToProps = {
+  removeCartItem: _actions.removeCartItem,
+  emptyCart: _actions.emptyCart
+};
+
+var _default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_Cart.default);
+
+exports.default = _default;
+},{"react-redux":"node_modules/react-redux/es/index.js","../components/Cart":"src/components/Cart.js","../actions":"src/actions/index.js"}],"src/components/App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -72165,26 +72412,20 @@ var _reactRouterDom = require("react-router-dom");
 
 var _Menu = _interopRequireDefault(require("./Menu"));
 
-var _PopularSongs = _interopRequireDefault(require("./PopularSongs"));
+var _PopularSongs = _interopRequireDefault(require("../containers/PopularSongs"));
 
-var _StylesList = _interopRequireDefault(require("./StylesList"));
+var _StylesList = _interopRequireDefault(require("../containers/StylesList"));
 
-var _Style = _interopRequireDefault(require("./Style"));
+var _Style = _interopRequireDefault(require("../containers/Style"));
 
 var _Song = _interopRequireDefault(require("../containers/Song"));
 
-var _AddSong = _interopRequireDefault(require("./AddSong"));
+var _AddSong = _interopRequireDefault(require("../containers/AddSong"));
 
-var _Cart = _interopRequireDefault(require("./Cart"));
+var _Cart = _interopRequireDefault(require("../containers/Cart"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// - / (PopularSongs.js)
-// - /styles (StylesList.js)
-// - /styles/:styleName (Style.js)
-// - /song/:songId (Song.js)
-// - /add (AddSong.js)
-// - /cart (Cart.js)
 function App() {
   return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
     to: "/"
@@ -72208,7 +72449,7 @@ function App() {
     path: "/cart"
   }, /*#__PURE__*/_react.default.createElement(_Cart.default, null))));
 }
-},{"react":"node_modules/react/index.js","react-router-dom":"node_modules/react-router-dom/esm/react-router-dom.js","./Menu":"src/components/Menu.js","./PopularSongs":"src/components/PopularSongs.js","./StylesList":"src/components/StylesList.js","./Style":"src/components/Style.js","../containers/Song":"src/containers/Song.js","./AddSong":"src/components/AddSong.js","./Cart":"src/components/Cart.js"}],"src/state.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","react-router-dom":"node_modules/react-router-dom/esm/react-router-dom.js","./Menu":"src/components/Menu.js","../containers/PopularSongs":"src/containers/PopularSongs.js","../containers/StylesList":"src/containers/StylesList.js","../containers/Style":"src/containers/Style.js","../containers/Song":"src/containers/Song.js","../containers/AddSong":"src/containers/AddSong.js","../containers/Cart":"src/containers/Cart.js"}],"src/state.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -72261,6 +72502,12 @@ exports.default = void 0;
 
 var _redux = require("redux");
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -72281,33 +72528,91 @@ function songs() {
     case "SET_SONGS":
       return [].concat(_toConsumableArray(state), [action.value]);
 
+    case "ADD_SONG":
+      setTimeout(function () {
+        console.log(state);
+      }, 3000);
+      return [].concat(_toConsumableArray(state), [action.value]);
+
+    case "TOGGLE_FAVOURITE":
+      // const updatedSongs = 
+      // set it into our state!
+      // how should I modify the state here?
+      // recreate a WHOLE new state array
+      // we want to update the state in an IMMUTABLE WAY
+      return state.map(function (song) {
+        if (song.id === action.value) {
+          return _objectSpread(_objectSpread({}, song), {}, {
+            isFavorited: !song.isFavorited
+          });
+        }
+
+        return song;
+      });
+
+    case "UPVOTE_SONG":
+      return state.map(function (song) {
+        if (song.id === action.value) {
+          return _objectSpread(_objectSpread({}, song), {}, {
+            upvotes: song.upvotes + 1
+          });
+        }
+
+        return song;
+      });
+
+    case "DOWNVOTE_SONG":
+      return state.map(function (song) {
+        if (song.id === action.value) {
+          return _objectSpread(_objectSpread({}, song), {}, {
+            downvotes: song.downvotes + 1
+          });
+        }
+
+        return song;
+      });
+
     default:
       return state;
   }
 }
 
-function favoriteSong() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+function cartItems() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
   var action = arguments.length > 1 ? arguments[1] : undefined;
-  return {};
+
+  switch (action.type) {
+    case "SET_CART_ITEMS":
+      return [].concat(_toConsumableArray(state), [action.value]);
+
+    case "ADD_TO_CART":
+      // push in an immutable way
+      return [].concat(_toConsumableArray(state), [action.value]);
+
+    case "REMOVE_FROM_CART":
+      return state.filter(function (cartItem) {
+        return cartItem.id !== action.value;
+      });
+
+    case "EMPTY_CART":
+      return [];
+
+    default:
+      return state;
+  }
 }
 
-function upvoteSong() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+function styles() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
   var action = arguments.length > 1 ? arguments[1] : undefined;
-  return {};
-}
 
-function downvoteSong() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-  var action = arguments.length > 1 ? arguments[1] : undefined;
-  return {};
-}
+  switch (action.type) {
+    case "SET_STYLES":
+      return [].concat(_toConsumableArray(state), [action.value]);
 
-function addToCart() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-  var action = arguments.length > 1 ? arguments[1] : undefined;
-  return {};
+    default:
+      return state;
+  }
 }
 
 function addSong() {
@@ -72316,27 +72621,11 @@ function addSong() {
   return {};
 }
 
-function removeCartItem() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-  var action = arguments.length > 1 ? arguments[1] : undefined;
-  return {};
-}
-
-function emptyCart() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-  var action = arguments.length > 1 ? arguments[1] : undefined;
-  return {};
-}
-
 var _default = (0, _redux.combineReducers)({
   songs: songs,
-  favoriteSong: favoriteSong,
-  upvoteSong: upvoteSong,
-  downvoteSong: downvoteSong,
-  addToCart: addToCart,
-  addSong: addSong,
-  removeCartItem: removeCartItem,
-  emptyCart: emptyCart
+  cartItems: cartItems,
+  styles: styles,
+  addSong: addSong
 });
 
 exports.default = _default;
@@ -72409,7 +72698,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49370" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51217" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

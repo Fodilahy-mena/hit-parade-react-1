@@ -19,9 +19,10 @@ export const SongPreview = styled.div`
 	}
 `;
 
-export default function Style() {
+export default function Style({songs}) {
 	const { styleName } = useParams();
-	const { songs } = useContext(Context);
+	// This is an array array from context and no longer be used since we use redux
+	// const { songs } = useContext(Context);
 
 	function createSongTemplate(song) {
 		return (

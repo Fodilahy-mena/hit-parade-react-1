@@ -26,8 +26,9 @@ const FormStyles = styled.form`
 // input that is link to STATE
 // value, onChange
 
-export default function AddSong() {
-	const { styles, addSong } = useContext(Context);
+export default function AddSong({styles, addSong}) {
+	// This is a function from context and no longer be used since we use redux
+	// const { addSong } = useContext(Context);
 
 	const [title, setTitle] = useState('');
 	const [artist, setArtist] = useState('');

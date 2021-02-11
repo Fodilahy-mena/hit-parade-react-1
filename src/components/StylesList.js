@@ -16,8 +16,9 @@ const StylesContainer = styled.div`
 	}
 `;
 
-export default function StylesList() {
-	const { styles } = useContext(Context);
+export default function StylesList({styles}) {
+	// This is an array from context and no longer be used since we use redux
+	// const { styles } = useContext(Context);
 	return (
 		<div>
 			<h1>Styles list</h1>

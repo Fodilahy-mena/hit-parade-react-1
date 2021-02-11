@@ -26,8 +26,9 @@ const CartItemStyles = styled.div`
 	}
 `;
 
-export default function Cart() {
-	const { cartItems, removeCartItem, emptyCart } = useContext(Context);
+export default function Cart({cartItems, removeCartItem, emptyCart}) {
+	// This is a function from context and they longer be used since we use redux
+	// const { emptyCart } = useContext(Context);
 	const [total, setTotal] = useState(0);
 
 	useEffect(() => {

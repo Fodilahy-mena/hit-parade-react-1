@@ -3,19 +3,13 @@ import { Switch, Route, Link } from 'react-router-dom';
 
 import Menu from './Menu';
 
-import PopularSongs from './PopularSongs';
-import StylesList from './StylesList';
-import Style from './Style';
+import PopularSongs from '../containers/PopularSongs';
+import StylesList from '../containers/StylesList';
+import Style from '../containers/Style';
 import Song from '../containers/Song';
-import AddSong from './AddSong';
-import Cart from './Cart';
+import AddSong from '../containers/AddSong';
+import Cart from '../containers/Cart';
 
-// - / (PopularSongs.js)
-// - /styles (StylesList.js)
-// - /styles/:styleName (Style.js)
-// - /song/:songId (Song.js)
-// - /add (AddSong.js)
-// - /cart (Cart.js)
 
 export default function App() {
 	return (

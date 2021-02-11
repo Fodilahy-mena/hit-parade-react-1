@@ -41,15 +41,17 @@ const SongItemStyle = styled.div`
 	}
 `;
 
-export default function SongItem({ song }) {
-	const {
-		favoriteSong,
-		upvoteSong,
-		downvoteSong,
-		addToCart,
-		cartItems,
-		removeCartItem,
-	} = useContext(Context);
+export default function SongItem({song, cartItems, favoriteSong, upvoteSong, downvoteSong, addToCart, removeCartItem }) {
+
+	// Those are functions and variables state from context and they no longer be used since we use redux
+	// const {
+	// 	// favoriteSong,
+	// 	// upvoteSong,
+	// 	// downvoteSong,
+	// 	// addToCart,
+	// 	// cartItems,
+	// 	// removeCartItem,
+	// } = useContext(Context);
 
 	function showCartIcon() {
 		const isAlreadyInCart = cartItems.some(item => item.id === song.id);
