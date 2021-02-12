@@ -9,7 +9,8 @@ export default function Song({songs}) {
 	// const { songs } = useContext(Context);
 	const history = useHistory();
 
-	const song = songs.find(song => song.id === songId);
+	const song = songs.find(song => song.id == songId);
+	console.log("song",song)
 
 	return (
 		<div>

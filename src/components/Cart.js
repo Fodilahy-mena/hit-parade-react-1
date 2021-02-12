@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Context } from './Context';
 import { AiOutlineDelete } from 'react-icons/ai';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 const CartItemsContainer = styled.div`
@@ -26,9 +27,11 @@ const CartItemStyles = styled.div`
 	}
 `;
 
-export default function Cart({cartItems, removeCartItem, emptyCart}) {
+export default function Cart({ removeCartItem, emptyCart}) {
 	// This is a function from context and they longer be used since we use redux
 	// const { emptyCart } = useContext(Context);
+	const cartItems = useSelector(state => state.cartItems);
+	console.log(cartItems)
 	const [total, setTotal] = useState(0);
 
 	useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Context } from './Context';
 import SongItem from './SongItem';
 import styled from 'styled-components';
@@ -11,10 +11,22 @@ const SongsContainer = styled.ul`
 	margin: 0;
 `;
 
-export default function PopularSongs({songs, cartItems, favoriteSong, upvoteSong, downvoteSong, addToCart, removeCartItem}) {
+export default function PopularSongs({ setSongs, songs, favoriteSong, upvoteSong, downvoteSong, addToCart, removeCartItem}) {
 
 	// This is an array from context and no longer be used since we use redux
 	// const { songs } = useContext(Context);
+	useEffect(() => {
+		if (songs.length > 0) {
+			localStorage.setItem('songs', JSON.stringify(songs));
+		}
+	}, [songs]);
+
+	 
+
+	useEffect(() => {
+		setSongs(); 
+	},[])
+
 
 	function sortSongsByPopularity(songA, songB) {
 		const ratioA = songA.upvotes - songA.downvotes;
@@ -27,11 +39,11 @@ export default function PopularSongs({songs, cartItems, favoriteSong, upvoteSong
 		const songsList = songs
 			.sort(sortSongsByPopularity)
 			.map(song => <SongItem key={song.id}
-				cartItems={cartItems}
 				song={song} 
 				favoriteSong={favoriteSong} 
 				upvoteSong={upvoteSong} downvoteSong={downvoteSong}
 				addToCart={addToCart} removeCartItem={removeCartItem}
+				
 				></SongItem>);
 		return songsList;
 	}

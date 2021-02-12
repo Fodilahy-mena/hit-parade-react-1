@@ -1,15 +1,21 @@
-
-export function setSongs(songs){
-    return {
-      type: "SET_SONGS",
-      value: songs
+import songs from '../songsData.json';
+export function setSongs(){
+    return async (dispatch) => {
+      const lsSongs = JSON.parse(localStorage.getItem('songs'));
+      dispatch({
+        type: "SET_SONGS",
+        value: lsSongs ? lsSongs : songs
+      })
     }
   }
-
-  export function setCartItems(cartItems){
-    return {
+  
+  export function setCartItems(cartItems= [{}]){
+    return async (dispatch) => {
+      const lsCartItems = JSON.parse(localStorage.getItem('cartItems'));
+      dispatch({
       type: "SET_CART_ITEMS",
-      value: cartItems
+      value: lsCartItems ? lsCartItems : cartItems
+      })
     }
   }
 

@@ -8,8 +8,5 @@ function mapStateToProps(state) {
 	};
 }
 
-// const mapDispatchToProps = {
-// 	getSongs,
-// };
 
 export default connect(mapStateToProps, null)(Song);

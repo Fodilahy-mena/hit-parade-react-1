@@ -8,23 +8,23 @@ function ContextProvider({ children }) {
 	const [cartItems, setCartItems] = useState([]);
 	const [styles, setStyles] = useState(['Pop', 'Salegy', 'Reggae', 'Rock', 'Folk', 'Rap']);
 
-	// useEffect(() => {
-	// 	// if there's something inside ls with an id of "songs", then use that.
-	// 	const lsSongs = JSON.parse(localStorage.getItem('songs'));
-	// 	// otherwise, get the json
-	// 	lsSongs ? setSongs(lsSongs) : setSongs(songData);
+	useEffect(() => {
+		// if there's something inside ls with an id of "songs", then use that.
+		const lsSongs = JSON.parse(localStorage.getItem('songs'));
+		// otherwise, get the json
+		lsSongs ? setSongs(lsSongs) : setSongs(songData);
 
-	// 	const lsCartItems = JSON.parse(localStorage.getItem('cartItems'));
-	// 	lsCartItems && setCartItems(lsCartItems);
-	// }, []);
+		const lsCartItems = JSON.parse(localStorage.getItem('cartItems'));
+		lsCartItems && setCartItems(lsCartItems);
+	}, []);
 
-	// useEffect(() => {
-	// 	localStorage.setItem('songs', JSON.stringify(songs));
-	// }, [songs]);
+	useEffect(() => {
+		localStorage.setItem('songs', JSON.stringify(songs));
+	}, [songs]);
 
-	// useEffect(() => {
-	// 	localStorage.setItem('cartItems', JSON.stringify(cartItems));
-	// }, [cartItems]);
+	useEffect(() => {
+		localStorage.setItem('cartItems', JSON.stringify(cartItems));
+	}, [cartItems]);
 
 	// everytime there's something changing on the songs state, update that to ls.
 

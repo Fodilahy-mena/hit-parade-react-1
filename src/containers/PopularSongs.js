@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import PopularSongs from '../components/PopularSongs';
-import { toggleFavouriteSong, upvoteSong, downvoteSong, addToCart, removeCartItem } from '../actions';
+import {setCartItems, toggleFavouriteSong, upvoteSong, downvoteSong, addToCart, removeCartItem, setSongs } from '../actions';
 
 function mapStateToProps(state) {
 	return {
@@ -14,7 +14,8 @@ const mapDispatchToProps = {
     upvoteSong: upvoteSong,
 	downvoteSong: downvoteSong,
     addToCart: addToCart,
-    removeCartItem: removeCartItem
+    removeCartItem: removeCartItem,
+	setSongs: setSongs,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PopularSongs);

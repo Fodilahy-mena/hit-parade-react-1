@@ -1,6 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components';
+import { useSelector,  useDispatch } from 'react-redux';
 import { Context } from './Context';
+import {setCartItems} from '../actions';
+
 import { Link } from 'react-router-dom';
 
 import {
@@ -41,8 +44,9 @@ const SongItemStyle = styled.div`
 	}
 `;
 
-export default function SongItem({song, cartItems, favoriteSong, upvoteSong, downvoteSong, addToCart, removeCartItem }) {
-
+export default function SongItem({song, favoriteSong, upvoteSong, downvoteSong, addToCart, removeCartItem }) {
+const cartItems = useSelector(state => state.cartItems);
+const dispatch = useDispatch();
 	// Those are functions and variables state from context and they no longer be used since we use redux
 	// const {
 	// 	// favoriteSong,
@@ -52,6 +56,16 @@ export default function SongItem({song, cartItems, favoriteSong, upvoteSong, dow
 	// 	// cartItems,
 	// 	// removeCartItem,
 	// } = useContext(Context);
+
+	useEffect(() => {
+		if (cartItems.length > 0) {
+			localStorage.setItem('cartItems', JSON.stringify(cartItems));
+		}
+	}, [cartItems]);
+
+	useEffect(() => {
+		dispatch(setCartItems(cartItems));
+	}, [])
 
 	function showCartIcon() {
 		const isAlreadyInCart = cartItems.some(item => item.id === song.id);
